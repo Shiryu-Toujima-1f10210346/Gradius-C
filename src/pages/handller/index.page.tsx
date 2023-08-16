@@ -1,15 +1,19 @@
+/* eslint-disable complexity */
 import { useRef, useState } from 'react';
 import styles from './index.module.css';
 
 const Controller = () => {
   const [boxPosition, setBoxPosition] = useState('60%');
   const [circlePosition, setCirclePosition] = useState('15%');
+  const [up, setUp] = useState<boolean>(false);
+  const [down, setDown] = useState<boolean>(false);
+  const [left, setLeft] = useState<boolean>(false);
+  const [right, setRight] = useState<boolean>(false);
 
   const joystickRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
   const startPosition = useRef({ x: 0, y: 0 });
-
   const handleSwitchPositions = () => {
     setBoxPosition(boxPosition === '60%' ? '10%' : '60%');
     setCirclePosition(circlePosition === '15%' ? '70%' : '15%');
@@ -57,6 +61,43 @@ const Controller = () => {
     );
 
     updateJoystickTransform(clampedValues.clampedX, clampedValues.clampedY);
+
+    const angle = Math.atan2(clampedValues.clampedY, clampedValues.clampedX);
+    const angleInDegrees = (angle * 180) / Math.PI;
+
+    if (angleInDegrees >= -45 && angleInDegrees <= 45) {
+      setRight(true);
+      setLeft(false);
+      setUp(false);
+      setDown(false);
+      console.log('right');
+    } else if (angleInDegrees >= 45 && angleInDegrees <= 135) {
+      setRight(false);
+      setLeft(false);
+      setUp(false);
+      setDown(true);
+      console.log('down');
+    }
+    if (angleInDegrees >= 135 || angleInDegrees <= -135) {
+      setRight(false);
+      setLeft(true);
+      setUp(false);
+      setDown(false);
+      console.log('left');
+    }
+    if (angleInDegrees >= -135 && angleInDegrees <= -45) {
+      setRight(false);
+      setLeft(false);
+      setUp(true);
+      setDown(false);
+      console.log('up');
+    }
+  };
+
+  const handleJoystickTouchEnd = () => {
+    if (joystickRef.current) {
+      joystickRef.current.style.transform = 'translate(-50%, -50%)';
+    }
   };
 
   const calculateClampedValues = (
@@ -83,10 +124,8 @@ const Controller = () => {
     });
   };
 
-  const handleJoystickTouchEnd = () => {
-    if (joystickRef.current) {
-      joystickRef.current.style.transform = 'translate(-50%, -50%)';
-    }
+  const shootBullets = () => {
+    console.log('shoot bullets');
   };
 
   return (
@@ -114,7 +153,7 @@ const Controller = () => {
       <button id="switch-button" className="switch-button" onClick={handleSwitchPositions}>
         Switch Positions
       </button>
-      <div className={styles.circle} style={{ left: circlePosition }} />
+      <div className={styles.circle} style={{ left: circlePosition }} onClick={shootBullets} />
     </div>
   );
 };
