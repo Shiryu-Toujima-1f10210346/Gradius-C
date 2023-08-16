@@ -20,7 +20,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "types": ["vitest/importMeta"],
-    "incremental": true
+    "incremental": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.js", ".eslintrc.js"],
   "exclude": ["node_modules", "server"]

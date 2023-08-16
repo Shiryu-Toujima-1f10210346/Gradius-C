@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Circle, Image, Layer, Stage } from 'react-konva';
 import { Loading } from 'src/components/Loading/Loading';
 import styles from './index.module.css';
+
 const Home = () => {
   //黒い枠の中をクリックし、矢印ボタンを押すと、赤い点が動くよー
   const [playerX, setPlayerX] = useState(4);

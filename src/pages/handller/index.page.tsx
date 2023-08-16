@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import styles from './index.module.css';
 
-const Controller = () => {
+export const Controller = () => {
   const [boxPosition, setBoxPosition] = useState('60%');
   const [circlePosition, setCirclePosition] = useState('15%');
   const [up, setUp] = useState<boolean>(false);
